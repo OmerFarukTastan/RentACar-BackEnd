@@ -1,6 +1,8 @@
 ﻿using System;
+using Business.Abstract;
 using Business.Concrete;
 using DataAccess.Concrete;
+using DataAccess.Concrete.EntityFramework;
 using DataAccess.Concrete.InMemory;
 
 
@@ -49,3 +51,22 @@ using DataAccess.Concrete.InMemory;
         Console.WriteLine($"{item.Id} {item.BrandId} {item.DailyPrice} {item.Description}");
     }
     Console.WriteLine("Car id number is 1 shown.");
+
+
+    Car car1 = new Car
+    {
+    BrandId = 1,
+    ColorId = 1,
+    ModelYear = 2019,
+    DailyPrice = -300,
+    Description = "Audi A5"
+    };
+
+    ICarServices carService = new CarManager(new EfCarDal());
+    carService.Add(car1);
+    Console.WriteLine("-------");
+    List<Car> cars = carService.GetCarsByColorId(1);
+    foreach (var car in cars)
+    {
+    Console.WriteLine($"Car Name : {car.Description}, Daily Price : {car.DailyPrice}");
+    }

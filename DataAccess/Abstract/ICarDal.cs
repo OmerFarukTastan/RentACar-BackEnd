@@ -7,7 +7,7 @@ using DataAccess.Concrete;
 
 namespace DataAccess.Abstract
 {
-    public interface ICarDal
+    public interface ICarDal : IEntityRepository<Car>
     {
         List<Car> GetAllCars();
 
@@ -18,6 +18,6 @@ namespace DataAccess.Abstract
         void Update(Car car);
 
         List<Car> GetById(int Id);
-        
+        List<Car> GetAllCars(Func<object, bool> value);
     }
 }

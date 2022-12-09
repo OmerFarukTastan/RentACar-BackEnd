@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection.Metadata.Ecma335;
 using System.Runtime.ConstrainedExecution;
 using System.Text;
@@ -76,6 +77,27 @@ namespace DataAccess.Concrete.InMemory
         public List<Car> GetById(int Id)
         {
             return _cars.Where(c => c.Id == Id).ToList();
+        }
+
+        public List<Car> GetAllCars(Func<object, bool> value)
+        {
+            return GetAllCars(value);   
+        }
+
+        public Car Get(Expression<Func<Car, bool>> filter)
+        {
+            return Get(filter);
+        }
+
+        public List<Car> GetAll(Expression<Func<Car, bool>> filter = null)
+        {
+            return GetAll(filter);  
+        }
+
+        public void DeleteByEntity(Car item)
+        {
+            Car carToDelete = _cars.SingleOrDefault(item);
+            _cars.Remove(carToDelete);
         }
     }
 
