@@ -3,21 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Core.DateAccess;
+using Entities.Concrete;
 using DataAccess.Concrete;
+using Entities.DTOs;
 
 namespace DataAccess.Abstract
 {
     public interface ICarDal : IEntityRepository<Car>
     {
-        List<Car> GetAllCars();
 
-        void Add(Car car);
+        List<CarDetailDto> GetCarDetails();
 
-        void Delete(int id);
-
-        void Update(Car car);
-
-        List<Car> GetById(int Id);
-        List<Car> GetAllCars(Func<object, bool> value);
-    }
+    } 
 }

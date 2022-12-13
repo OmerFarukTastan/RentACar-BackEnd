@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DataAccess.Abstract;
+using Core.Entities;
 
-namespace DataAccess.Concrete
-{
+
+namespace Entities.Concrete;
+
     public class Car : IEntity
     {
         public int Id { get; set; }
@@ -16,4 +17,4 @@ namespace DataAccess.Concrete
         public decimal DailyPrice { get; set; }
         public string Description { get; set; }
     }
-}
+

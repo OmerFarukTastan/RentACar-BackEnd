@@ -8,6 +8,7 @@ using DataAccess.Abstract;
 using DataAccess.Concrete;
 using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
+using Entities.DTOs;
 
 namespace Business.Concrete
 {
@@ -27,19 +28,19 @@ namespace Business.Concrete
             }
         }
 
-        public void Delete(int id)
+        public void Delete(Car car)
         {
-            _carDal.Delete(id);
+             _carDal.Delete(car);
         }
 
         public List<Car> GetById(int id)
         {
-            return _carDal.GetById(id);
+            return _carDal.GetAll(c => c.Id == id);
         }
 
         public List<Car> GetAll()
         {
-            return _carDal.GetAllCars();
+            return _carDal.GetAll();
         }
 
         public void Update(Car car)
@@ -47,6 +48,11 @@ namespace Business.Concrete
             _carDal.Update(car);
 
 
+        }
+
+        public List<CarDetailDto> GetCarDetails()
+        {
+            return _carDal.GetCarDetails();
         }
 
         public List<Car> GetCarsByBrandId(int brandId)

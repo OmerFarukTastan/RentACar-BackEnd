@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataAccess.Concrete;
+using Entities.Concrete;
+using Entities.DTOs;
 
 namespace Business.Abstract
 {
@@ -13,7 +15,7 @@ namespace Business.Abstract
 
         void Add(Car car);
 
-        void Delete(int id);
+        void Delete(Car car);
 
         void Update(Car car);
 
@@ -21,5 +23,7 @@ namespace Business.Abstract
 
         List<Car> GetCarsByBrandId(int brandId);
         List<Car> GetCarsByColorId(int colorId);
+
+        List<CarDetailDto> GetCarDetails();
     }
 }
