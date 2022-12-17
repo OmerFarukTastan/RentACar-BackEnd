@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Business.Abstract;
+using Business.Constants;
+using Core.Entities;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete;
 using DataAccess.Concrete.InMemory;
@@ -20,49 +23,64 @@ namespace Business.Concrete
         {
             _carDal = carDal;
         }
-        public void Add(Car car)
+        public IResult Add(Car car)
         {
             if (IsValid(car.Description, (double)car.DailyPrice))
             {
                 _carDal.Add(car);
+                return new SuccessResult(Messages.CarAdded);
             }
+            return new ErrorResult(Messages.CarNameInvalid);
         }
 
-        public void Delete(Car car)
+        public IResult Delete(Car Id)
         {
-             _carDal.Delete(car);
+            _carDal.Delete(Id);
+            return new SuccessResult(Messages.Deleted);
         }
 
-        public List<Car> GetById(int id)
+        public IDataResult<List<Car>> GetById(int id)
         {
-            return _carDal.GetAll(c => c.Id == id);
+            
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(car => car.Id == id), $"Car with id: {id} is listed");
         }
 
-        public List<Car> GetAll()
+        public IDataResult<List<Car>> GetAll()
         {
-            return _carDal.GetAll();
+            var data = _carDal.GetAll();
+            var message = "All cars are listed";
+            return new SuccessDataResult<List<Car>>(data, message);
         }
 
-        public void Update(Car car)
+        public IResult Update(Car car)
         {
-            _carDal.Update(car);
+            var carName = car.Description;
+            if (IsValid(carName, (double)car.DailyPrice))
+            {
+                _carDal.Update(car);
+                return new SuccessResult($"{carName} named car is updated");
+            }
+            return new ErrorResult(Messages.CarNameInvalid);
 
 
         }
 
-        public List<CarDetailDto> GetCarDetails()
+        public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
-            return _carDal.GetCarDetails();
+            
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(),Messages.CarsListed);
         }
 
-        public List<Car> GetCarsByBrandId(int brandId)
+        public IDataResult<List<Car>> GetCarsByBrandId(int brandId)
         {
-            return _carDal.GetAll(car => car.BrandId == brandId);
+            
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == brandId));
         }
 
-        public List<Car> GetCarsByColorId(int colorId)
+        public IDataResult<List<Car>> GetCarsByColorId(int colorId)
         {
-            return _carDal.GetAll(car => car.ColorId == colorId);
+            
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == colorId));
         }
 
         private bool IsValid(string carName, double dailyPrice)
