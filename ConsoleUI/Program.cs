@@ -23,8 +23,20 @@ class Program
         //ColorManagerTest();
         //RentalManagerTest();
         //CustomerManagerTest();
-        UserManagerTest();
+        //UserManagerTest();
+        testc();
         //test();
+    }
+
+    private static void testc()
+    {
+        CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
+        var result2 = customerManager.GetAll();
+        foreach (var customer in result2.Data)
+        {
+            Console.WriteLine(customer.UserId + " " + customer.CompanyName);
+        }
+        Console.WriteLine(Messages.ListedCustomers);
     }
 
     private static void UserManagerTest()

@@ -10,7 +10,7 @@ using Entities.DTOs;
 
 namespace Business.Abstract
 {
-    public interface ICarServices
+    public interface ICarService
     {
         IDataResult<List<Car>> GetAll();
 

@@ -15,7 +15,7 @@ using Entities.DTOs;
 
 namespace Business.Concrete
 {
-    public class CarManager:ICarServices
+    public class CarManager:ICarService
     {
         private ICarDal _carDal;
         
