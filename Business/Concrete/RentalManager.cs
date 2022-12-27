@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
@@ -20,13 +22,11 @@ namespace Business.Concrete
         {
             _rentalDal = rentalDal;
         }
+
+        [ValidationAspect(typeof(RentalValidator))]
         public IResult Add(Rental rental)
         {
-            var result = _rentalDal.GetAll(r => r.Id == rental.CarId && r.ReturnDate == null).Any();
-            if (result == true)
-            {
-                return new ErrorResult(Messages.NotDeliveredRental);
-            }
+            
             _rentalDal.Add(rental);
             return new SuccessResult(Messages.DeliveredRental);
         }
