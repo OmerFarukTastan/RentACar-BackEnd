@@ -34,5 +34,12 @@ namespace Business.Constants
         public static string DeletedRental = "Rental info is deleted";
         public static string NotDeliveredRental = "Rental can't be done";
         public static string DeliveredRental = "Rental is succesful";
+
+        public static string CarImagesLimitExceeded = "A car can have 5 images as maximum";
+        public static string CarNotExisted = "Car don't exist";
+        public static string ImageUploaded = "Image uploaded successfully";
+        public static string ImageDeleted = "Image deleted successfully";
+        public static string ImageUpdated = "Image updated successfully";
+        public static string SuccessfullyRetrieved = "Image retrieved successfully";
     }
 }
