@@ -13,7 +13,7 @@ namespace WebAPI.Controllers
 
         public CustomersController(ICustomerService customerService)
         {
-            customerService = _customerService;
+            _customerService = customerService;
         }
 
         [HttpGet("getall")]

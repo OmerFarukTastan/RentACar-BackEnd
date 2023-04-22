@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using Core.Entities.Concrete;
 using Entities.Concrete;
 
 namespace Business.Constants
@@ -33,7 +35,7 @@ namespace Business.Constants
         public static string UpdatedRental = "Rental info is updated";
         public static string DeletedRental = "Rental info is deleted";
         public static string NotDeliveredRental = "Rental can't be done";
-        public static string DeliveredRental = "Rental is succesful";
+        public static string DeliveredRental = "Rental is successful";
 
         public static string CarImagesLimitExceeded = "A car can have 5 images as maximum";
         public static string CarNotExisted = "Car don't exist";
@@ -41,5 +43,21 @@ namespace Business.Constants
         public static string ImageDeleted = "Image deleted successfully";
         public static string ImageUpdated = "Image updated successfully";
         public static string SuccessfullyRetrieved = "Image retrieved successfully";
+
+        public static string UserRegistered = "User is registered successfully";
+        public static string AuthorizationDenied = "You have no authorization";
+        public static string PasswordError = "Wrong password";
+        public static string UserNotFound = "User don't exists";
+        public static string SuccessfulLogin = "Login is successful";
+        public static string UserAlreadyExists = "User is already exists";
+        public static string AccessTokenCreated = "Access token is created";
+
+        public static string CarIsNotAvailable = "Car is rented by other customer";
+        public static string PayIsSuccessfull = "Payment is successful";
+        public static string CardInformationIsIncorrect = "Card information is wrong";
+
+        public static string ListedSuccessful = "Listed Succesfully ";
+
+        public static string UserPasswordUpdated = "Password is changed";
     }
 }

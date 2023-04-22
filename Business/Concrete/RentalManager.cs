@@ -7,6 +7,7 @@ using Business.Abstract;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
@@ -26,9 +27,15 @@ namespace Business.Concrete
         [ValidationAspect(typeof(RentalValidator))]
         public IResult Add(Rental rental)
         {
-            
+
+            IResult result = BusinessRules.Run(CheckAvailability(rental.CarId, rental.RentDate));
+            if (result != null)
+            {
+                return result;
+
+            }
             _rentalDal.Add(rental);
-            return new SuccessResult(Messages.DeliveredRental);
+            return new SuccessResult();
         }
 
         public IResult Delete(Rental rental)
@@ -52,5 +59,36 @@ namespace Business.Concrete
             _rentalDal.Update(rental);
             return new SuccessResult(Messages.UpdatedRental);
         }
+
+        public IDataResult<List<Rental>> GetRentalByCarId(int id)
+        {
+            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(r => r.CarId == id));
+        }
+
+        public IDataResult<Rental> GetByCarId(int id)
+        {
+            return new SuccessDataResult<Rental>(_rentalDal.Get(r => r.CarId == id));
+        }
+
+        private IResult CheckAvailability(int carId, DateTime newRentDate)
+        {
+            var result = _rentalDal.GetAll(c => c.CarId == carId);
+            if (result != null)
+            {
+                for (int i = 0; i < result.Count; i++)
+                {
+                    if (result[i].ReturnDate > newRentDate)
+                    {
+                        return new ErrorResult(Messages.CarIsNotAvailable);
+                    }
+
+                }
+
+            }
+            return new SuccessResult();
+
+        }
+
+
     }
 }

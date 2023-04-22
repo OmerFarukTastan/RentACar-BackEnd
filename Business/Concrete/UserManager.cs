@@ -7,9 +7,12 @@ using Business.Abstract;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
+using Core.Entities.Concrete;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 
 namespace Business.Concrete
 {
@@ -39,6 +42,14 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<User>>(_userDal.GetAll(), Messages.ListedUsers);
         }
+        public User GetByMail(string email)
+        {
+            return _userDal.Get(u => u.Email == email);
+        }
+        public List<OperationClaim> GetClaims(User user)
+        {
+            return _userDal.GetClaims(user);
+        }
 
         public IDataResult<User> GetById(int id)
         {
@@ -49,6 +60,51 @@ namespace Business.Concrete
         {
             _userDal.Update(user);
             return new SuccessResult(Messages.UpdatedUser);
+        }
+
+        public IResult UpdateByDto(UserDto userDto)
+        {
+            var rulesResult = BusinessRules.Run(CheckIfUserIdExist(userDto.Id)
+                , CheckIfEmailAvailable(userDto.Email));
+            if (rulesResult != null)
+            {
+                return rulesResult;
+            }
+
+            var updatedUser = _userDal.Get(u => u.Id == userDto.Id && u.Email == userDto.Email);
+            if (updatedUser == null)
+            {
+                return new ErrorResult(Messages.UserNotFound);
+            }
+
+            updatedUser.FirstName = userDto.FirstName;
+            updatedUser.LastName = userDto.LastName;
+            _userDal.Update(updatedUser);
+            return new SuccessResult("User is updated");
+        }
+
+        private IResult CheckIfUserIdExist(int userId)
+        {
+            var result = _userDal.GetAll(u => u.Id == userId).Any();
+            if (!result)
+            {
+                return new ErrorResult("User is not found");
+            }
+            return new SuccessResult();
+        }
+
+        private IResult CheckIfEmailAvailable(string userEmail)
+        {
+            var result = BaseCheckIfEmailExist(userEmail);
+            if (!result)
+            {
+                return new ErrorResult("Email is not exist");
+            }
+            return new SuccessResult();
+        }
+        private bool BaseCheckIfEmailExist(string userEmail)
+        {
+            return _userDal.GetAll(u => u.Email == userEmail).Any();
         }
     }
 }

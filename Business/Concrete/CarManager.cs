@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
@@ -26,7 +27,9 @@ namespace Business.Concrete
             _carDal = carDal;
         }
 
+        [SecuredOperation("admin")]
         [ValidationAspect(typeof(CarValidator))]
+        
         public IResult Add(Car car)
         {
             
@@ -85,6 +88,35 @@ namespace Business.Concrete
             
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == colorId));
         }
+
+        public IDataResult<List<Car>> GetCarsByCarId(int carId)
+        {
+
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.Id == carId));
+        }
+
+        public IDataResult<List<CarDetailDto>> GetCarDetailsByBrandAndColorId(int brandId, int colorId)
+        {
+            if (brandId != 0 && colorId != 0)
+            {
+                return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetailsByBrandAndColorId(brandId, colorId), Messages.ListedSuccessful);
+            }
+            else if (brandId != 0 && colorId == 0)
+            {
+                return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarsByBrandId(brandId), Messages.ListedSuccessful);
+            }
+            else if (brandId == 0 && colorId != 0)
+            {
+                return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarsByColorId(colorId), Messages.ListedSuccessful);
+            }
+            else
+            {
+                return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(), Messages.ListedSuccessful);
+            }
+
+        }
+
+
 
         private bool IsValid(string carName, double dailyPrice)
         {

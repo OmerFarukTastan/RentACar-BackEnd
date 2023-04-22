@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Core.DateAccess;
-using Entities.Concrete;
+using Core.Entities.Concrete;
+
 
 namespace DataAccess.Abstract
 {
     public interface IUserDal:IEntityRepository<User>
     {
-    
+        List<OperationClaim> GetClaims(User user);
+        
     }
 }

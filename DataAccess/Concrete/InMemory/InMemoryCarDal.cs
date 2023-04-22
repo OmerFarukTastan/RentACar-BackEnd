@@ -104,12 +104,34 @@ namespace DataAccess.Concrete.InMemory
             _cars.Remove(carToDelete);
         }
 
+        public List<CarDetailDto> GetCarDetails(Expression<Func<CarDetailDto, bool>> filter = null)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<CarDetailDto> GetCarDetails()
         {
             throw new NotImplementedException();
         }
 
         public void Delete(Car entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CarDetailDto> GetCarsByBrandId(int brandId)
+        {
+            throw new NotImplementedException();
+        }
+
+
+
+        public List<CarDetailDto> GetCarsByColorId(int colorId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CarDetailDto> GetCarDetailsByBrandAndColorId(int brandId, int colorId)
         {
             throw new NotImplementedException();
         }
